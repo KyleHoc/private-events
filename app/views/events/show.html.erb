@@ -1,10 +1,30 @@
-<p style="color: green"><%= notice %></p>
+<!--<p style="color: green"><%= notice %></p>-->
 
 <%= render @event %>
 
 <div>
-  <%= link_to "Edit this event", edit_event_path(@event) %> |
+  <p>Created by: <%= link_to @event.creator.email, user_path %></p>
+  <% if !@event.attendees.include?(current_user) %>
+    <%= link_to "Register", registration_event_path(@event.id) %>
+  <% else %>
+    <%= link_to "Unregister", unregister_event_path(@event.id) %>
+  <% end %>
+  <p></p>
+  <% if current_user == @event.creator %>
+    <%= link_to "Edit this event", edit_event_path(@event) %>
+    <p></p>
+  <% end %>
+
+  <h2>Registered Users:</h2>
+  <% @event.attendees.each do |user|%>
+    <ul>
+      <li><%= user.email %></li>
+    </ul>
+  <% end %>
+  
   <%= link_to "Back to events", events_path %>
 
-  <%= button_to "Destroy this event", @event, method: :delete %>
+<% if @event.creator == current_user %>
+  <%= button_to "Delete", @event, method: :delete %>
+<% end %>
 </div>

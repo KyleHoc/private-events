@@ -4,11 +4,11 @@
 
 <div id="events">
   <% @events.each do |event| %>
+    <p>Created by: <%= link_to event.creator.email, user_path(event.creator_id) %></p>
     <%= render event %>
     <p>
       <%= link_to "Show this event", event %>
     </p>
+    <p>________________________________________________</p>
   <% end %>
 </div>
-
-<%= link_to "Create event", new_event_path %>

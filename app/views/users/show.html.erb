@@ -4,16 +4,35 @@
   </style>
 </head>
 
-<h1>Events:</h1>
+<h1>Events for <%= @user.email %></h1>
 <div>
-  <% @user.event.each do |event| %>
+<h1>Upcoming Events:</h1>
+  <% @user.attended_events.future.each do |event| %>
+      <div class = eventblock>
+        <p>Event Name: <%= event.name %> </p>
+        <p>Location: <%= event.location %> </p>
+        <p>Date: <%= event.date %>
+      </div>
+  <% end %>
+
+  <h1>Past Events:</h1>
+  <% @user.attended_events.past.each do |event| %>
+      <div class = eventblock>
+        <p>Event Name: <%= event.name %> </p>
+        <p>Location: <%= event.location %> </p>
+        <p>Date: <%= event.date %>
+      </div>
+  <% end %>
+
+  <h1>Created Events:</h1>
+  <% @user.created_events.each do |event| %>
     <div class = eventblock>
-      <p>Event Name: <% event.name %> </p>
-      <p>Location: <% event.location %> </p>
-      <p>Date: <% event.date %>
+      <p>Event Name: <%= event.name %> </p>
+      <p>Location: <%= event.location %> </p>
+      <p>Date: <%= event.date %>
     </div>
   <% end %>
-  <%= link_to "Return Home", index_path %>
+  <%= link_to "Return Home", root_path %>
 </div>
 
 

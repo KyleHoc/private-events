@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  creator_id: MyString
+  event_id: MyString
+  guest_id: MyString
+
+two:
+  creator_id: MyString
+  event_id: MyString
+  guest_id: MyString

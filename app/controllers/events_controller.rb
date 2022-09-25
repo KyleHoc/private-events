@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, :require_login, only: [:new, :create, :show]
+  before_action :authenticate_user!, :require_login, only: [:new, :create, :show, :registration]
   # GET /events or /events.json
   def index
     @events = Event.all
@@ -21,7 +21,7 @@ class EventsController < ApplicationController
 
   # POST /events or /events.json
   def create
-    @event = @creator.create_event(event_params)
+    @event = @current_user.created_events.build(event_params)
 
     respond_to do |format|
       if @event.save
@@ -55,6 +55,27 @@ class EventsController < ApplicationController
       format.html { redirect_to events_url, notice: "Event was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def registration
+    @event = Event.find(params[:id])
+
+    registration = Registration.new(attendee_id: current_user.id, attended_event_id: @event.id)
+    if registration.save
+      if !@event.attendees.include?(current_user)
+        redirect_to @event, notice: "You are now attending this event!"
+      else
+        redirect_to @event, notice: "You are now registered for this event"
+      end
+    end
+  end
+
+  def unregister
+    @event = Event.find(params[:id])
+    registration = Registration.find_by(attendee_id: current_user.id, attended_event_id: @event.id)
+    registration.destroy
+
+    redirect_to @event, notice: "You are no longer registered for this event"
   end
 
   private
